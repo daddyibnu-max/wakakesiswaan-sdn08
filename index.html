@@ -54,7 +54,7 @@
         </div>
         <nav class="flex-1 p-3 space-y-1 overflow-y-auto text-xs font-semibold">
           <button @click="activeTab = 'dashboard'" :class="['w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg', activeTab === 'dashboard' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-800']"><i data-lucide="layout-dashboard" class="w-4 h-4"></i><span>Dashboard</span></button>
-          <button @click="activeTab = 'students'" :class="['w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg', activeTab === 'students' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-800']"><i data-lucide="users" class="w-4 h-4"></i><span>Database & Roster Siswa</span></button>
+          <button @click="activeTab = 'students'" :class="['w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg', activeTab === 'students' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-800']"><i data-lucide="users" class="w-4 h-4"></i><span>Database Siswa</span></button>
           <div class="text-slate-500 text-[10px] font-bold px-3 py-2 uppercase tracking-widest pt-2">Modul Real-Time</div>
           <button @click="activeTab = 'attendance'" :class="['w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg', activeTab === 'attendance' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-800']"><span>1. Daftar Hadir Siswa</span></button>
           <button @click="activeTab = 'discipline'" :class="['w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg', activeTab === 'discipline' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-800']"><span>2. Kedisiplinan Harian</span></button>
@@ -254,7 +254,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div class="md:col-span-2"><label class="block text-[10px] font-bold uppercase">Nama Perlombaan / Bidang</label><input type="text" v-model="achForm.name" class="w-full px-3 py-2 border rounded-lg" required /></div>
-                  <div><label class="block text-[10px] font-bold uppercase">Juara / Peringkat</label><input type="text" v-model="achForm.rank" class="w-full px-3 py-2 border rounded-lg" placeholder="Contoh: Juara 1" required /></div>
+                  <div><label class="block text-[10px] font-bold uppercase">Juara / Peringkat</label><input type="text" v-model="achForm.rank" class="w-full px-3 py-2 border rounded-lg" required /></div>
                 </div>
                 <div><label class="block text-[10px] font-bold uppercase">Tingkat Wilayah</label><select v-model="achForm.level" class="w-full px-3 py-2 border rounded-lg"><option value="Sekolah">Sekolah</option><option value="Kecamatan">Kecamatan</option><option value="Kota">Kota</option><option value="Nasional">Nasional</option></select></div>
                 <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-extrabold uppercase rounded-lg tracking-wider shadow">💾 Simpan &amp; Sinkron Cloud</button>
@@ -369,14 +369,14 @@
         const sendToCloud = async (sheetTabName, arrayPayload) => {
           if(!webAppUrl || webAppUrl.includes("MOHON_GANTI")) { showNotif("⚠️ Link Jembatan Cloud belum dipasang!"); return; }
           try {
-            showNotif("🚀 Mensinkronisasikan ke Google Sheets...");
+            showNotif("🚀 Sinkronisasi ke Google Sheets...");
             await fetch(webAppUrl, {
               method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ action: "write", target: sheetTabName, data: arrayPayload })
             });
-            showNotif("✅ Sukses! Data aman di Google Sheets.");
+            showNotif("✅ Sukses sinkronisasi cloud!");
             setTimeout(fetchAllDataFromCloud, 1000);
-          } catch (err) { showNotif("❌ Server Cloud sibuk."); }
+          } catch (err) { showNotif("❌ Jaringan cloud sibuk."); }
         };
 
         const fetchAllDataFromCloud = async () => {
@@ -449,7 +449,6 @@
           visitForm.value = { purpose: '', result: '' };
         };
 
-        // --- DARI SINI SEMUA FITUR SUDAH AKTIF DAN TERKONEKSI KE CLOUD SPREADSHEET ---
         const saveParentSummons = () => {
           if (!formStudentId.value) return;
           const student = students.value.find(s => s.id === formStudentId.value);
