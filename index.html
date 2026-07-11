@@ -179,7 +179,7 @@
               <form @submit.prevent="saveCounseling" class="space-y-4 mt-4 text-xs font-semibold">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div><label class="block text-[10px] font-bold uppercase">Rombel</label><select v-model="formClass" class="w-full px-3 py-2 border rounded-lg"><option v-for="cls in classes" :key="cls" :value="cls">{{ cls }}</option></select></div>
-                  <div><label class="block text-[10px] font-bold uppercase">Siswa</label><select v-model="formStudentId" class="w-full px-3 py-2 border rounded-lg"><option v-for="s in students.filter(x => x.classId === formClass)" :key="s.id" :value="s.id">{{ s.name }}</option></select></div>
+                  <div><label class="block text-[10px] font-bold uppercase">Siswa</label><select v-model="formStudentId" class="w-full px-3 py-2 border Geist rounded-lg"><option v-for="s in students.filter(x => x.classId === formClass)" :key="s.id" :value="s.id">{{ s.name }}</option></select></div>
                   <div><label class="block text-[10px] font-bold uppercase">Tanggal</label><input type="date" v-model="formDate" class="w-full px-3 py-2 border rounded-lg" /></div>
                 </div>
                 <div><label class="block text-[10px] font-bold uppercase">Kasus</label><input type="text" v-model="counselForm.issue" class="w-full px-3 py-2 border rounded-lg" required /></div>
@@ -302,6 +302,19 @@
   </div>
 
   <script>
+    // MEMAKSA CLEAN BROWSER MEMORY DI HULU SEBELUM RUNNING
+    localStorage.removeItem('db_students');
+    localStorage.removeItem('db_attendance');
+    localStorage.removeItem('db_discipline');
+    localStorage.removeItem('db_seninsiap');
+    localStorage.removeItem('db_counseling');
+    localStorage.removeItem('db_homevisit');
+    localStorage.removeItem('db_parentsummons');
+    localStorage.removeItem('db_ekskul_attendance');
+    localStorage.removeItem('db_achievements');
+    localStorage.removeItem('db_mutations');
+    localStorage.removeItem('wakasis_auth');
+
     const webAppUrl = "https://script.google.com/macros/s/AKfycbxdGwf9aCm1fDz6MsF0rRNWuqToWP7reR4SNXnQyQPB8mi6D6scHQEynyZXYniQx5xB/exec";
 
     const INITIAL_CLASSES = ["1A", "1B", "1C", "2A", "2B", "2C", "3A", "3B", "3C", "4A", "4B", "4C", "4D", "5A", "5B", "5C", "6A", "6B", "6C"];
@@ -314,41 +327,19 @@
 
     createApp({
       setup() {
-        const isAuthenticated = ref(localStorage.getItem('wakasis_auth') === 'true');
+        const isAuthenticated = ref(false);
         const passwordInput = ref(''); const authError = ref('');
-        const schoolName = ref(localStorage.getItem('school_name') || 'SDN TENGAH 08');
-        const wakasisName = ref(localStorage.getItem('editor_name') || 'Abbas Taju Syarifuddin, S.Pd');
-        const defaultLogo = 'https://upload.wikimedia.org/wikipedia/commons/9/9c/Logo_Kementerian_Pendidikan_dan_Kebudayaan.png';
-        const schoolLogo = ref(localStorage.getItem('school_logo') || defaultLogo);
+        const schoolName = ref('SDN TENGAH 08');
+        const wakasisName = ref('Abbas Taju Syarifuddin, S.Pd');
+        const defaultLogo = 'https://upload.wikimedia.org/wikipedia/commons/9/9c/Logo_Kementerian_Pendidikan_dan_Kemudayaan.png';
+        const schoolLogo = ref(defaultLogo);
         const activeTab = ref('dashboard'); const classes = INITIAL_CLASSES;
 
-        const students = ref(getStored('db_students', INITIAL_STUDENTS));
-        const attendance = ref(getStored('db_attendance', []));
-        const discipline = ref(getStored('db_discipline', []));
-        const seninSiap = ref(getStored('db_seninsiap', []));
-        const counseling = ref(getStored('db_counseling', []));
-        const homeVisit = ref(getStored('db_homevisit', []));
-        const parentSummons = ref(getStored('db_parentsummons', []));
-        const ekskulList = ref(['Pramuka', 'Silat', 'Melukis', 'Hadroh']);
-        const ekskulAttendance = ref(getStored('db_ekskul_attendance', []));
-        const achievements = ref(getStored('db_achievements', []));
-        const mutations = ref(getStored('db_mutations', []));
+        const students = ref(INITIAL_STUDENTS);
+        const attendance = ref([]); const discipline = ref([]); const seninSiap = ref([]); const counseling = ref([]); const homeVisit = ref([]); const parentSummons = ref([]); const ekskulList = ref(['Pramuka', 'Silat', 'Melukis', 'Hadroh']); const ekskulAttendance = ref([]); const achievements = ref([]); const mutations = ref([]);
 
         const filterClass = ref('5A'); const formDate = ref(new Date().toISOString().slice(0, 10)); const formClass = ref('5A'); const formStudentId = ref(''); const newStudentName = ref(''); const newStudentClass = ref('5A');
         const discList = ref({ uniform: false, shoes: false, ontime: false, activities: false }); const discAction = ref(''); const seninList = ref({ late: false, attribute: false }); const counselForm = ref({ issue: '', solution: '' }); const visitForm = ref({ purpose: '', result: '' }); const summonsForm = ref({ reason: '', outcome: '' }); const activeEkskul = ref('Pramuka'); const ekskulStatus = ref('Hadir'); const achForm = ref({ name: '', rank: '', level: 'Sekolah' }); const mutationType = ref('Masuk'); const mutationIncomingName = ref(''); const mutationSchool = ref(''); const mutationReason = ref(''); const notification = ref('');
-
-        function getStored(key, fallback) { const saved = localStorage.getItem(key); return saved ? JSON.parse(saved) : fallback; }
-
-        watch(students, (v) => localStorage.setItem('db_students', JSON.stringify(v)), { deep: true });
-        watch(attendance, (v) => localStorage.setItem('db_attendance', JSON.stringify(v)), { deep: true });
-        watch(discipline, (v) => localStorage.setItem('db_discipline', JSON.stringify(v)), { deep: true });
-        watch(seninSiap, (v) => localStorage.setItem('db_seninsiap', JSON.stringify(v)), { deep: true });
-        watch(counseling, (v) => localStorage.setItem('db_counseling', JSON.stringify(v)), { deep: true });
-        watch(homeVisit, (v) => localStorage.setItem('db_homevisit', JSON.stringify(v)), { deep: true });
-        watch(parentSummons, (v) => localStorage.setItem('db_parentsummons', JSON.stringify(v)), { deep: true });
-        watch(ekskulAttendance, (v) => localStorage.setItem('db_ekskul_attendance', JSON.stringify(v)), { deep: true });
-        watch(achievements, (v) => localStorage.setItem('db_achievements', JSON.stringify(v)), { deep: true });
-        watch(mutations, (v) => localStorage.setItem('db_mutations', JSON.stringify(v)), { deep: true });
 
         watch(formClass, (newVal) => {
           const matched = students.value.filter(s => s.classId === newVal);
@@ -369,7 +360,7 @@
         const sendToCloud = async (sheetTabName, arrayPayload) => {
           if(!webAppUrl || webAppUrl.includes("MOHON_GANTI")) { showNotif("⚠️ Link Jembatan Cloud belum dipasang!"); return; }
           try {
-            showNotif("🚀 Sinkronisasi ke Google Sheets center...");
+            showNotif("🚀 Sinkronisasi ke Google Sheets...");
             await fetch(webAppUrl, {
               method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ action: "write", target: sheetTabName, data: arrayPayload })
@@ -398,11 +389,11 @@
         };
 
         const handleLogin = () => {
-          if (passwordInput.value === 'wakasis08') { isAuthenticated.value = true; localStorage.setItem('wakasis_auth', 'true'); nextTick(() => { lucide.createIcons(); fetchAllDataFromCloud(); }); } 
+          if (passwordInput.value === 'wakasis08') { isAuthenticated.value = true; nextTick(() => { lucide.createIcons(); fetchAllDataFromCloud(); }); } 
           else { authError.value = 'Password Salah!'; }
         };
 
-        const handleLogout = () => { isAuthenticated.value = false; localStorage.removeItem('wakasis_auth'); };
+        const handleLogout = () => { isAuthenticated.value = false; };
         const saveSettings = () => { localStorage.setItem('school_name', schoolName.value); localStorage.setItem('editor_name', wakasisName.value); };
         const filteredStudents = computed(() => students.value.filter(s => s.classId === filterClass.value));
 
