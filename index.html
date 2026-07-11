@@ -369,7 +369,7 @@
         const sendToCloud = async (sheetTabName, arrayPayload) => {
           if(!webAppUrl || webAppUrl.includes("MOHON_GANTI")) { showNotif("⚠️ Link Jembatan Cloud belum dipasang!"); return; }
           try {
-            showNotif("🚀 Sinkronisasi ke Google Sheets...");
+            showNotif("🚀 Sinkronisasi ke Google Sheets center...");
             await fetch(webAppUrl, {
               method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ action: "write", target: sheetTabName, data: arrayPayload })
