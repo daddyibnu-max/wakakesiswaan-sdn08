@@ -52,7 +52,7 @@
           <button @click="activeTab = 'students'" :class="['w-full text-left px-3 py-2 rounded-lg', activeTab === 'students' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-800']">Database Siswa</button>
           <div class="text-slate-500 text-[10px] font-bold px-3 py-2 uppercase tracking-widest pt-2">Modul Real-Time</div>
           <button v-for="n in 9" :key="n" @click="activeTab = 'mod'+n" :class="['w-full text-left px-3 py-2 rounded-lg', activeTab === 'mod'+n ? 'bg-emerald-600 text-white' : 'hover:bg-slate-800']">
-            {{ n }. {{ getTabName(n) }}
+            {{ n }}. {{ getTabName(n) }}
           </button>
           <div class="text-slate-500 text-[10px] font-bold px-3 py-2 uppercase tracking-widest pt-2">Sistem</div>
           <button @click="activeTab = 'settings'" :class="['w-full text-left px-3 py-2 rounded-lg', activeTab === 'settings' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-800']">Kop &amp; Logo Sekolah</button>
@@ -106,8 +106,7 @@
         const isAuthenticated = ref(false); const passwordInput = ref(''); const authError = ref('');
         const schoolName = ref('SDN TENGAH 08'); const wakasisName = ref('Abbas Taju Syarifuddin, S.Pd');
         
-        // MEMORI LOGO DIKUNCI AGAR PERMANEN DAN TIDAK TERHAPUS LAGI
-        const defaultLogo = 'https://upload.wikimedia.org/wikipedia/commons/9/9c/Logo_Kementerian_Pendidikan_dan_Kebudayaan.png';
+        const defaultLogo = 'https://upload.wikimedia.org/wikipedia/commons/9/9c/Logo_Kementerian_Pendidikan_dan_Kemudayaan.png';
         const schoolLogo = ref(localStorage.getItem('saved_school_logo') || defaultLogo);
         
         const activeTab = ref('dashboard');
@@ -124,7 +123,7 @@
             const r = new FileReader(); 
             r.onload = (el) => { 
               schoolLogo.value = el.target.result; 
-              localStorage.setItem('saved_school_logo', el.target.result); // Mengunci gambar di memori laptop
+              localStorage.setItem('saved_school_logo', el.target.result); 
             }; 
             r.readAsDataURL(file); 
           }
