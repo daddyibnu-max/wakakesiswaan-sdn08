@@ -94,13 +94,7 @@
           <div v-if="activeTab === 'dashboard'" class="space-y-6 no-print">
             <div class="bg-gradient-to-r from-emerald-800 to-teal-900 text-white rounded-2xl p-6 shadow-xl">
               <h1 class="text-3xl font-black">Mode Penginputan Bersama Aktif</h1>
-              <p class="text-emerald-100 text-xs mt-2 leading-relaxed">Aplikasi ini secara dinamis terhubung ke Google Spreadsheet Pusat. Semua laptop yang memegang file ini dapat menginput data secara bersamaan.</p>
-            </div>
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div class="bg-white p-5 rounded-xl border"><p class="text-[10px] font-bold text-slate-400 uppercase">Total Siswa</p><p class="text-2xl font-black text-slate-800 mt-1">{{ students.length }}</p></div>
-              <div class="bg-white p-5 rounded-xl border"><p class="text-[10px] font-bold text-slate-400 uppercase">Total Kasus Disiplin</p><p class="text-2xl font-black text-rose-600 mt-1">{{ discipline.length }}</p></div>
-              <div class="bg-white p-5 rounded-xl border"><p class="text-[10px] font-bold text-slate-400 uppercase">Kasus Upacara</p><p class="text-2xl font-black text-indigo-600 mt-1">{{ seninSiap.length }}</p></div>
-              <div class="bg-white p-5 rounded-xl border"><p class="text-[10px] font-bold text-slate-400 uppercase">Total Prestasi</p><p class="text-2xl font-black text-amber-500 mt-1">{{ achievements.length }}</p></div>
+              <p class="text-emerald-100 text-xs mt-2 leading-relaxed">Semua laptop terhubung ke Google Spreadsheet Pusat secara real-time.</p>
             </div>
           </div>
 
@@ -113,12 +107,6 @@
                 <div><label class="block text-[10px] font-bold uppercase">Rombel Kelas</label><select v-model="newStudentClass" class="w-full px-3 py-2 border rounded-lg text-xs"><option v-for="cls in classes" :key="cls" :value="cls">{{ cls }}</option></select></div>
                 <button type="submit" class="px-5 py-2.5 bg-emerald-600 text-white font-bold rounded-lg text-xs uppercase shadow">➕ Daftarkan Roster</button>
               </form>
-            </div>
-            <div class="bg-white p-6 rounded-xl border">
-              <table class="w-full text-left text-xs">
-                <thead><tr class="bg-slate-100 text-slate-700 uppercase text-[10px] font-bold"><th class="p-3">ID</th><th class="p-3">Nama Lengkap</th><th class="p-3">Rombel</th><th class="p-3 text-center">Aksi</th></tr></thead>
-                <tbody><tr v-for="student in students" :key="student.id" class="hover:bg-slate-50"><td class="p-3 font-mono">{{ student.id }}</td><td class="p-3 font-bold">{{ student.name }}</td><td class="p-3">Kelas {{ student.classId }}</td><td class="p-3 text-center"><button @click="deleteStudent(student.id, student.name)" class="text-rose-600 bg-rose-50 px-2 py-1 rounded text-[10px]">Hapus</button></td></tr></tbody>
-              </table>
             </div>
           </div>
 
@@ -143,13 +131,6 @@
                 </tbody>
               </table>
             </div>
-            <div class="bg-white p-6 rounded-xl border print-area">
-              <h4 class="font-bold uppercase text-sm mb-2 no-print">Histori Cloud Global (Semua User)</h4>
-              <table class="w-full text-left text-xs border">
-                <thead><tr class="bg-slate-100 font-bold"><th class="p-3 border">Tanggal</th><th class="p-3 border">Siswa</th><th class="p-3 border">Rombel</th><th class="p-3 border">Status</th></tr></thead>
-                <tbody><tr v-for="item in attendance" :key="item.id"><td class="p-3 border">{{ item.date }}</td><td class="p-3 border font-bold">{{ item.studentName }}</td><td class="p-3 border">{{ item.classId }}</td><td class="p-3 border">{{ item.status }}</td></tr></tbody>
-              </table>
-            </div>
           </div>
 
           <!-- TAB: 2. DISCIPLINE -->
@@ -167,19 +148,11 @@
                   <div class="grid grid-cols-2 gap-2">
                     <label class="flex items-center space-x-2 bg-slate-50 p-2 rounded border"><input type="checkbox" v-model="discList.uniform" /> <span>Atribut Lengkap Kurang</span></label>
                     <label class="flex items-center space-x-2 bg-slate-50 p-2 rounded border"><input type="checkbox" v-model="discList.shoes" /> <span>Sepatu Bukan Hitam</span></label>
-                    <label class="flex items-center space-x-2 bg-slate-50 p-2 rounded border"><input type="checkbox" v-model="discList.ontime" /> <span>Masuk Kelas Terlambat</span></label>
-                    <label class="flex items-center space-x-2 bg-slate-50 p-2 rounded border"><input type="checkbox" v-model="discList.activities" /> <span>Tidak Ikut Kegiatan</span></label>
                   </div>
                 </div>
                 <div><label class="block text-[10px] font-bold uppercase">Sanksi / Tindak Lanjut</label><input type="text" v-model="discAction" class="w-full px-3 py-2 border rounded-lg" required /></div>
                 <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-extrabold uppercase rounded-lg">💾 Simpan &amp; Sinkron Cloud</button>
               </form>
-            </div>
-            <div class="bg-white p-6 rounded-xl border print-area">
-              <table class="w-full text-left text-xs border">
-                <thead><tr class="bg-slate-100 font-bold"><th class="p-3 border">Tanggal</th><th class="p-3 border">Siswa</th><th class="p-3 border">Rombel</th><th class="p-3 border">Pelanggaran</th><th class="p-3 border">Sanksi</th></tr></thead>
-                <tbody><tr v-for="item in discipline" :key="item.id"><td class="p-3 border font-mono">{{ item.date }}</td><td class="p-3 border font-bold">{{ item.studentName }}</td><td class="p-3 border">{{ item.classId }}</td><td class="p-3 border">{{ item.violations }}</td><td class="p-3 border italic">{{ item.action }}</td></tr></tbody>
-              </table>
             </div>
           </div>
 
@@ -193,15 +166,9 @@
                   <div><label class="block text-[10px] font-bold uppercase">Siswa</label><select v-model="formStudentId" class="w-full px-3 py-2 border rounded-lg"><option v-for="s in students.filter(x => x.classId === formClass)" :key="s.id" :value="s.id">{{ s.name }}</option></select></div>
                   <div><label class="block text-[10px] font-bold uppercase">Tanggal</label><input type="date" v-model="formDate" class="w-full px-3 py-2 border rounded-lg" /></div>
                 </div>
-                <div class="space-y-2"><label class="flex items-center space-x-2 bg-slate-50 p-2 rounded border"><input type="checkbox" v-model="seninList.late" /> <span>Terlambat Upacara</span></label><label class="flex items-center space-x-2 bg-slate-50 p-2 rounded border"><input type="checkbox" v-model="seninList.attribute" /> <span>Atribut Upacara Tidak Lengkap</span></label></div>
+                <div class="space-y-2"><label class="flex items-center space-x-2 bg-slate-50 p-2 rounded border"><input type="checkbox" v-model="seninList.late" /> <span>Terlambat Upacara</span></label></div>
                 <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-extrabold uppercase rounded-lg">💾 Simpan &amp; Sinkron Cloud</button>
               </form>
-            </div>
-            <div class="bg-white p-6 rounded-xl border print-area">
-              <table class="w-full text-left text-xs border">
-                <thead><tr class="bg-slate-100 font-bold"><th class="p-3 border">Tanggal</th><th class="p-3 border">Siswa</th><th class="p-3 border">Rombel</th><th class="p-3 border">Masalah</th></tr></thead>
-                <tbody><tr v-for="item in seninSiap" :key="item.id"><td class="p-3 border">{{ item.date }}</td><td class="p-3 border font-bold">{{ item.studentName }}</td><td class="p-3 border">{{ item.classId }}</td><td class="p-3 border">{{ item.violations }}</td></tr></tbody>
-              </table>
             </div>
           </div>
 
@@ -215,16 +182,10 @@
                   <div><label class="block text-[10px] font-bold uppercase">Siswa</label><select v-model="formStudentId" class="w-full px-3 py-2 border rounded-lg"><option v-for="s in students.filter(x => x.classId === formClass)" :key="s.id" :value="s.id">{{ s.name }}</option></select></div>
                   <div><label class="block text-[10px] font-bold uppercase">Tanggal</label><input type="date" v-model="formDate" class="w-full px-3 py-2 border rounded-lg" /></div>
                 </div>
-                <div><label class="block text-[10px] font-bold uppercase">Permasalahan Kasus</label><textarea rows="2" v-model="counselForm.issue" class="w-full px-3 py-2 border rounded-lg" required></textarea></div>
+                <div><label class="block text-[10px] font-bold uppercase">Kasus</label><input type="text" v-model="counselForm.issue" class="w-full px-3 py-2 border rounded-lg" required /></div>
                 <div><label class="block text-[10px] font-bold uppercase">Solusi</label><input type="text" v-model="counselForm.solution" class="w-full px-3 py-2 border rounded-lg" required /></div>
                 <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-extrabold uppercase rounded-lg">💾 Simpan &amp; Sinkron Cloud</button>
               </form>
-            </div>
-            <div class="bg-white p-6 rounded-xl border print-area">
-              <table class="w-full text-left text-xs border">
-                <thead><tr class="bg-slate-100 font-bold"><th class="p-3 border">Tanggal</th><th class="p-3 border">Siswa</th><th class="p-3 border">Masalah</th><th class="p-3 border">Solusi</th></tr></thead>
-                <tbody><tr v-for="item in counseling" :key="item.id"><td class="p-3 border">{{ item.date }}</td><td class="p-3 border font-bold">{{ item.studentName }}</td><td class="p-3 border">{{ item.issue }}</td><td class="p-3 border italic">{{ item.solution }}</td></tr></tbody>
-              </table>
             </div>
           </div>
 
@@ -238,46 +199,34 @@
                   <div><label class="block text-[10px] font-bold uppercase">Siswa</label><select v-model="formStudentId" class="w-full px-3 py-2 border rounded-lg"><option v-for="s in students.filter(x => x.classId === formClass)" :key="s.id" :value="s.id">{{ s.name }}</option></select></div>
                   <div><label class="block text-[10px] font-bold uppercase">Tanggal</label><input type="date" v-model="formDate" class="w-full px-3 py-2 border rounded-lg" /></div>
                 </div>
-                <div><label class="block text-[10px] font-bold uppercase">Tujuan Kunjungan</label><input type="text" v-model="visitForm.purpose" class="w-full px-3 py-2 border rounded-lg" required /></div>
-                <div><label class="block text-[10px] font-bold uppercase">Hasil Kesepakatan</label><input type="text" v-model="visitForm.result" class="w-full px-3 py-2 border rounded-lg" required /></div>
+                <div><label class="block text-[10px] font-bold uppercase">Tujuan</label><input type="text" v-model="visitForm.purpose" class="w-full px-3 py-2 border rounded-lg" required /></div>
+                <div><label class="block text-[10px] font-bold uppercase">Hasil</label><input type="text" v-model="visitForm.result" class="w-full px-3 py-2 border rounded-lg" required /></div>
                 <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-extrabold uppercase rounded-lg">💾 Simpan &amp; Sinkron Cloud</button>
               </form>
-            </div>
-            <div class="bg-white p-6 rounded-xl border print-area">
-              <table class="w-full text-left text-xs border">
-                <thead><tr class="bg-slate-100 font-bold"><th class="p-3 border">Tanggal</th><th class="p-3 border">Siswa</th><th class="p-3 border">Tujuan</th><th class="p-3 border">Hasil</th></tr></thead>
-                <tbody><tr v-for="item in homeVisit" :key="item.id"><td class="p-3 border">{{ item.date }}</td><td class="p-3 border font-bold">{{ item.studentName }}</td><td class="p-3 border">{{ item.purpose }}</td><td class="p-3 border italic">{{ item.result }}</td></tr></tbody>
-              </table>
             </div>
           </div>
 
           <!-- TAB: 6. PARENT SUMMONS -->
           <div v-if="activeTab === 'parentsummons'" class="space-y-6">
-            <div class="bg-white p-6 rounded-xl border no-print">
-              <h3 class="text-lg font-black text-slate-800 uppercase">✉️ 6. Pemanggilan Orang Tua / Wali</h3>
+            <div class="bg-white p-6 rounded-xl border border-slate-200">
+              <h3 class="text-lg font-black text-slate-800 uppercase tracking-tight">✉️ 6. Pemanggilan Orang Tua / Wali</h3>
               <form @submit.prevent="saveParentSummons" class="space-y-4 mt-4 text-xs font-semibold">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div><label class="block text-[10px] font-bold uppercase">Rombel</label><select v-model="formClass" class="w-full px-3 py-2 border rounded-lg"><option v-for="cls in classes" :key="cls" :value="cls">{{ cls }}</option></select></div>
                   <div><label class="block text-[10px] font-bold uppercase">Siswa</label><select v-model="formStudentId" class="w-full px-3 py-2 border rounded-lg"><option v-for="s in students.filter(x => x.classId === formClass)" :key="s.id" :value="s.id">{{ s.name }}</option></select></div>
                   <div><label class="block text-[10px] font-bold uppercase">Tanggal</label><input type="date" v-model="formDate" class="w-full px-3 py-2 border rounded-lg" /></div>
                 </div>
-                <div><label class="block text-[10px] font-bold uppercase">Alasan Kasus</label><input type="text" v-model="summonsForm.reason" class="w-full px-3 py-2 border rounded-lg" required /></div>
-                <div><label class="block text-[10px] font-bold uppercase">Hasil Mediasi</label><input type="text" v-model="summonsForm.outcome" class="w-full px-3 py-2 border rounded-lg" required /></div>
-                <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-extrabold uppercase rounded-lg">💾 Simpan &amp; Sinkron Cloud</button>
+                <div><label class="block text-[10px] font-bold uppercase">Alasan Kasus Pemanggilan</label><input type="text" v-model="summonsForm.reason" class="w-full px-3 py-2 border rounded-lg" required /></div>
+                <div><label class="block text-[10px] font-bold uppercase">Hasil Kesepakatan / Mediasi</label><input type="text" v-model="summonsForm.outcome" class="w-full px-3 py-2 border rounded-lg" required /></div>
+                <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-extrabold uppercase rounded-lg tracking-wider shadow">💾 Simpan &amp; Sinkron Cloud</button>
               </form>
-            </div>
-            <div class="bg-white p-6 rounded-xl border print-area">
-              <table class="w-full text-left text-xs border">
-                <thead><tr class="bg-slate-100 font-bold"><th class="p-3 border">Tanggal</th><th class="p-3 border">Siswa</th><th class="p-3 border">Alasan</th><th class="p-3 border">Hasil</th></tr></thead>
-                <tbody><tr v-for="item in parentSummons" :key="item.id"><td class="p-3 border">{{ item.date }}</td><td class="p-3 border font-bold">{{ item.studentName }}</td><td class="p-3 border">{{ item.reason }}</td><td class="p-3 border italic">{{ item.outcome }}</td></tr></tbody>
-              </table>
             </div>
           </div>
 
           <!-- TAB: 7. EKSKUL -->
           <div v-if="activeTab === 'ekskul'" class="space-y-6">
-            <div class="bg-white p-6 rounded-xl border no-print">
-              <h3 class="text-lg font-black text-slate-800 uppercase">🏆 7. Presensi Kegiatan Ekskul</h3>
+            <div class="bg-white p-6 rounded-xl border border-slate-200">
+              <h3 class="text-lg font-black text-slate-800 uppercase tracking-tight">🏆 7. Presensi Kegiatan Ekskul</h3>
               <form @submit.prevent="saveEkskulAttendance" class="space-y-4 mt-4 text-xs font-semibold">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div><label class="block text-[10px] font-bold uppercase">Cabang Ekskul</label><select v-model="activeEkskul" class="w-full px-3 py-2 border rounded-lg"><option v-for="ek in ekskulList" :key="ek" :value="ek">{{ ek }}</option></select></div>
@@ -288,67 +237,49 @@
                   <div><label class="block text-[10px] font-bold uppercase">Siswa</label><select v-model="formStudentId" class="w-full px-3 py-2 border rounded-lg"><option v-for="s in students.filter(x => x.classId === formClass)" :key="s.id" :value="s.id">{{ s.name }}</option></select></div>
                   <div><label class="block text-[10px] font-bold uppercase">Kehadiran</label><select v-model="ekskulStatus" class="w-full px-3 py-2 border rounded-lg"><option value="Hadir">Hadir</option><option value="Izin">Izin</option><option value="Sakit">Sakit</option><option value="Alpa">Alpa</option></select></div>
                 </div>
-                <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-extrabold uppercase rounded-lg">💾 Simpan &amp; Sinkron Cloud</button>
+                <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-extrabold uppercase rounded-lg tracking-wider shadow">💾 Simpan &amp; Sinkron Cloud</button>
               </form>
-            </div>
-            <div class="bg-white p-6 rounded-xl border print-area">
-              <table class="w-full text-left text-xs border">
-                <thead><tr class="bg-slate-100 font-bold"><th class="p-3 border">Tanggal</th><th class="p-3 border">Siswa</th><th class="p-3 border">Cabang</th><th class="p-3 border">Status</th></tr></thead>
-                <tbody><tr v-for="item in ekskulAttendance" :key="item.id"><td class="p-3 border">{{ item.date }}</td><td class="p-3 border font-bold">{{ item.studentName }}</td><td class="p-3 border text-indigo-700">🏆 {{ item.ekskulType }}</td><td class="p-3 border">{{ item.status }}</td></tr></tbody>
-              </table>
             </div>
           </div>
 
           <!-- TAB: 8. ACHIEVEMENTS -->
           <div v-if="activeTab === 'achievements'" class="space-y-6">
-            <div class="bg-white p-6 rounded-xl border no-print">
-              <h3 class="text-lg font-black text-slate-800 uppercase">🥇 8. Prestasi Akademik &amp; Non-Akademik</h3>
+            <div class="bg-white p-6 rounded-xl border border-slate-200">
+              <h3 class="text-lg font-black text-slate-800 uppercase tracking-tight">🥇 8. Prestasi Akademik &amp; Non-Akademik</h3>
               <form @submit.prevent="saveAchievement" class="space-y-4 mt-4 text-xs font-semibold">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div><label class="block text-[10px] font-bold uppercase">Rombel</label><select v-model="formClass" class="w-full px-3 py-2 border rounded-lg"><option v-for="cls in classes" :key="cls" :value="cls">{{ cls }}</option></select></div>
                   <div><label class="block text-[10px] font-bold uppercase">Siswa</label><select v-model="formStudentId" class="w-full px-3 py-2 border rounded-lg"><option v-for="s in students.filter(x => x.classId === formClass)" :key="s.id" :value="s.id">{{ s.name }}</option></select></div>
-                  <div><label class="block text-[10px] font-bold uppercase">Tanggal</label><input type="date" v-model="formDate" class="w-full px-3 py-2 border rounded-lg" /></div>
+                  <div><label class="block text-[10px] font-bold uppercase">Tanggal Kejuaraan</label><input type="date" v-model="formDate" class="w-full px-3 py-2 border rounded-lg" /></div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div class="md:col-span-2"><label class="block text-[10px] font-bold uppercase">Nama Perlombaan</label><input type="text" v-model="achForm.name" class="w-full px-3 py-2 border rounded-lg" required /></div>
-                  <div><label class="block text-[10px] font-bold uppercase">Peringkat</label><input type="text" v-model="achForm.rank" class="w-full px-3 py-2 border rounded-lg" required /></div>
+                  <div class="md:col-span-2"><label class="block text-[10px] font-bold uppercase">Nama Perlombaan / Bidang</label><input type="text" v-model="achForm.name" class="w-full px-3 py-2 border rounded-lg" required /></div>
+                  <div><label class="block text-[10px] font-bold uppercase">Juara / Peringkat</label><input type="text" v-model="achForm.rank" class="w-full px-3 py-2 border rounded-lg" placeholder="Contoh: Juara 1" required /></div>
                 </div>
-                <div><label class="block text-[10px] font-bold uppercase">Tingkat</label><select v-model="achForm.level" class="w-full px-3 py-2 border rounded-lg"><option value="Sekolah">Sekolah</option><option value="Kecamatan">Kecamatan</option><option value="Kota">Kota</option><option value="Nasional">Nasional</option></select></div>
-                <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-extrabold uppercase rounded-lg">💾 Simpan &amp; Sinkron Cloud</button>
+                <div><label class="block text-[10px] font-bold uppercase">Tingkat Wilayah</label><select v-model="achForm.level" class="w-full px-3 py-2 border rounded-lg"><option value="Sekolah">Sekolah</option><option value="Kecamatan">Kecamatan</option><option value="Kota">Kota</option><option value="Nasional">Nasional</option></select></div>
+                <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-extrabold uppercase rounded-lg tracking-wider shadow">💾 Simpan &amp; Sinkron Cloud</button>
               </form>
-            </div>
-            <div class="bg-white p-6 rounded-xl border print-area">
-              <table class="w-full text-left text-xs border">
-                <thead><tr class="bg-slate-100 font-bold"><th class="p-3 border">Tanggal</th><th class="p-3 border">Siswa</th><th class="p-3 border">Deskripsi Lomba</th><th class="p-3 border">Peringkat</th><th class="p-3 border">Tingkat</th></tr></thead>
-                <tbody><tr v-for="item in achievements" :key="item.id"><td class="p-3 border">{{ item.date }}</td><td class="p-3 border font-bold">{{ item.studentName }}</td><td class="p-3 border font-bold text-indigo-900">{{ item.achievementName }}</td><td class="p-3 border text-amber-700 font-black">🥇 {{ item.rank }}</td><td class="p-3 border">{{ item.level }}</td></tr></tbody>
-              </table>
             </div>
           </div>
 
           <!-- TAB: 9. MUTATIONS -->
           <div v-if="activeTab === 'mutations'" class="space-y-6">
-            <div class="bg-white p-6 rounded-xl border no-print">
-              <h3 class="text-lg font-black text-slate-800 uppercase">🔄 9. Mutasi Siswa (Masuk / Keluar)</h3>
+            <div class="bg-white p-6 rounded-xl border border-slate-200">
+              <h3 class="text-lg font-black text-slate-800 uppercase tracking-tight">🔄 9. Mutasi Siswa (Masuk / Keluar)</h3>
               <form @submit.prevent="saveMutation" class="space-y-4 mt-4 text-xs font-semibold">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div><label class="block text-[10px] font-bold uppercase">Jenis Mutasi</label><select v-model="mutationType" class="w-full px-3 py-2 border rounded-lg"><option value="Masuk">Masuk (Pindahan Baru)</option><option value="Keluar">Keluar (Pindah Sekolah)</option></select></div>
-                  <div><label class="block text-[10px] font-bold uppercase">Rombel</label><select v-model="formClass" class="w-full px-3 py-2 border rounded-lg"><option v-for="cls in classes" :key="cls" :value="cls">{{ cls }}</option></select></div>
+                  <div><label class="block text-[10px] font-bold uppercase">Rombel Kelas</label><select v-model="formClass" class="w-full px-3 py-2 border rounded-lg"><option v-for="cls in classes" :key="cls" :value="cls">{{ cls }}</option></select></div>
                   <div><label class="block text-[10px] font-bold uppercase">Tanggal Efektif</label><input type="date" v-model="formDate" class="w-full px-3 py-2 border rounded-lg" /></div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div v-if="mutationType === 'Keluar'"><label class="block text-[10px] font-bold uppercase">Pilih Siswa</label><select v-model="formStudentId" class="w-full px-3 py-2 border rounded-lg" required><option v-for="s in students.filter(x => x.classId === formClass)" :key="s.id" :value="s.id">{{ s.name }}</option></select></div>
-                  <div v-else><label class="block text-[10px] font-bold uppercase">Nama Siswa Baru</label><input type="text" v-model="mutationIncomingName" class="w-full px-3 py-2 border rounded-lg" required /></div>
-                  <div><label class="block text-[10px] font-bold uppercase">Instansi Sekolah Asal/Tujuan</label><input type="text" v-model="mutationSchool" class="w-full px-3 py-2 border rounded-lg" required /></div>
+                  <div v-if="mutationType === 'Keluar'"><label class="block text-[10px] font-bold uppercase">Pilih Nama Siswa</label><select v-model="formStudentId" class="w-full px-3 py-2 border rounded-lg" :required="mutationType==='Keluar'"><option v-for="s in students.filter(x => x.classId === formClass)" :key="s.id" :value="s.id">{{ s.name }}</option></select></div>
+                  <div v-else><label class="block text-[10px] font-bold uppercase">Nama Siswa Baru</label><input type="text" v-model="mutationIncomingName" class="w-full px-3 py-2 border rounded-lg" :required="mutationType==='Masuk'" /></div>
+                  <div><label class="block text-[10px] font-bold uppercase">Sekolah Asal / Tujuan</label><input type="text" v-model="mutationSchool" class="w-full px-3 py-2 border rounded-lg" required /></div>
                 </div>
-                <div><label class="block text-[10px] font-bold uppercase">Sebab Alasan Mutasi</label><input type="text" v-model="mutationReason" class="w-full px-3 py-2 border rounded-lg" required /></div>
-                <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-extrabold uppercase rounded-lg">💾 Simpan &amp; Sinkron Cloud</button>
+                <div><label class="block text-[10px] font-bold uppercase">Alasan Keterangan Mutasi</label><input type="text" v-model="mutationReason" class="w-full px-3 py-2 border rounded-lg" required /></div>
+                <button type="submit" class="w-full py-2.5 bg-emerald-600 text-white font-extrabold uppercase rounded-lg tracking-wider shadow">💾 Simpan &amp; Sinkron Cloud</button>
               </form>
-            </div>
-            <div class="bg-white p-6 rounded-xl border print-area">
-              <table class="w-full text-left text-xs border">
-                <thead><tr class="bg-slate-100 font-bold"><th class="p-3 border">Tanggal</th><th class="p-3 border">Siswa</th><th class="p-3 border">Rombel</th><th class="p-3 border">Jenis</th><th class="p-3 border">Sekolah</th><th class="p-3 border">Alasan</th></tr></thead>
-                <tbody><tr v-for="item in mutations" :key="item.id"><td class="p-3 border">{{ item.date }}</td><td class="p-3 border font-bold">{{ item.studentName }}</td><td class="p-3 border">{{ item.classId }}</td><td class="p-3 border">{{ item.type }}</td><td class="p-3 border font-bold text-indigo-900">{{ item.schoolOriginOrDestination }}</td><td class="p-3 border italic">{{ item.reason }}</td></tr></tbody>
-              </table>
             </div>
           </div>
 
@@ -359,26 +290,9 @@
               <div><label class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Nama Sekolah</label><input type="text" v-model="schoolName" @input="saveSettings" class="w-full px-3 py-2 border rounded-lg focus:outline-none" /></div>
               <div><label class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Nama Wakasis</label><input type="text" v-model="wakasisName" @input="saveSettings" class="w-full px-3 py-2 border rounded-lg focus:outline-none" /></div>
               <div class="p-4 bg-emerald-50 border border-emerald-100 rounded-xl space-y-2">
-                <label class="block text-[11px] font-extrabold text-emerald-800 uppercase tracking-wider">👉 UNGGAH LOGO SEKOLAH BARU</label>
+                <label class="block text-[11px] font-extrabold text-emerald-800 uppercase tracking-wider">👉 UNGGAH LOGO SEKOLAH MANDIRI</label>
                 <input type="file" accept="image/*" @change="uploadLogo" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-black file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 cursor-pointer" />
               </div>
-              <div class="p-4 bg-slate-50 border rounded-lg flex items-center gap-4">
-                <img :src="schoolLogo" alt="Pratinjau Logo" class="h-20 w-20 object-contain border bg-white p-1 rounded-full" />
-                <div>
-                  <h5 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Pratinjau Aktif</h5>
-                  <p class="text-[10px] text-slate-400 font-normal">Logo terpilih akan otomatis tercetak di seluruh berkas fisik.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SIGNATURES PRINT-ONLY FOOTER -->
-          <div class="hidden print:grid grid-cols-2 gap-12 mt-12 text-center text-xs font-bold text-black bg-white p-4">
-            <div>
-              <p>Mengetahui,</p><p>Kepala Sekolah SDN Tengah 08</p><div class="h-16"></div><p class="underline">....................................................</p><p class="text-[10px] font-normal">NIP. .............................................</p>
-            </div>
-            <div>
-              <p>Jakarta, {{ new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) }}</p><p>Wakil Kepala Sekolah Bidang Kesiswaan</p><div class="h-16"></div><p class="underline">{{ wakasisName }}</p><p class="text-[10px] font-normal">NIP. .............................................</p>
             </div>
           </div>
 
@@ -392,14 +306,10 @@
 
     const INITIAL_CLASSES = ["1A", "1B", "1C", "2A", "2B", "2C", "3A", "3B", "3C", "4A", "4B", "4C", "4D", "5A", "5B", "5C", "6A", "6B", "6C"];
     const INITIAL_STUDENTS = [
-      { id: "S001", name: "Achmad Fauzi", classId: "1A" },
-      { id: "S002", name: "Adelia Putri", classId: "1A" },
-      { id: "S003", name: "Bagus Setiawan", classId: "2B" },
-      { id: "S004", name: "Citra Lestari", classId: "3C" },
-      { id: "S005", name: "Dandi Pratama", classId: "4A" }
+      { id: "S001", name: "Achmad Fauzi", classId: "5A" },
+      { id: "S002", name: "Adelia Putri", classId: "5A" }
     ];
 
-    const generateId = () => 'id-' + Math.random().toString(36).substring(2, 11) + '-' + Date.now().toString(36);
     const { createApp, ref, computed, watch, nextTick } = Vue;
 
     createApp({
@@ -424,7 +334,7 @@
         const achievements = ref(getStored('db_achievements', []));
         const mutations = ref(getStored('db_mutations', []));
 
-        const filterClass = ref('1A'); const formDate = ref(new Date().toISOString().slice(0, 10)); const formClass = ref('1A'); const formStudentId = ref(''); const newStudentName = ref(''); const newStudentClass = ref('1A');
+        const filterClass = ref('5A'); const formDate = ref(new Date().toISOString().slice(0, 10)); const formClass = ref('5A'); const formStudentId = ref(''); const newStudentName = ref(''); const newStudentClass = ref('5A');
         const discList = ref({ uniform: false, shoes: false, ontime: false, activities: false }); const discAction = ref(''); const seninList = ref({ late: false, attribute: false }); const counselForm = ref({ issue: '', solution: '' }); const visitForm = ref({ purpose: '', result: '' }); const summonsForm = ref({ reason: '', outcome: '' }); const activeEkskul = ref('Pramuka'); const ekskulStatus = ref('Hadir'); const achForm = ref({ name: '', rank: '', level: 'Sekolah' }); const mutationType = ref('Masuk'); const mutationIncomingName = ref(''); const mutationSchool = ref(''); const mutationReason = ref(''); const notification = ref('');
 
         function getStored(key, fallback) { const saved = localStorage.getItem(key); return saved ? JSON.parse(saved) : fallback; }
@@ -503,9 +413,6 @@
           newStudentName.value = '';
         };
 
-        const deleteStudent = (id, name) => { if (confirm(`Hapus ${name}?`)) { students.value = students.value.filter(s => s.id !== id); } };
-        const getAttendanceStatus = (studentId) => { const found = attendance.value.find(a => a.studentId === studentId && a.date === formDate.value); return found ? found.status : 'Hadir'; };
-
         const markAttendance = (studentId, studentName, status) => {
           sendToCloud("attendance", [formDate.value, studentName, filterClass.value, status, studentId]);
         };
@@ -516,8 +423,6 @@
           const activeViolations = [];
           if (discList.value.uniform) activeViolations.push('Atribut Kurang');
           if (discList.value.shoes) activeViolations.push('Sepatu Bukan Hitam');
-          if (discList.value.ontime) activeViolations.push('Terlambat');
-          if (discList.value.activities) activeViolations.push('Tidak Ikut Kegiatan');
           sendToCloud("discipline", [formDate.value, student.name, formClass.value, activeViolations.join('; '), discAction.value]);
           discAction.value = '';
         };
@@ -527,7 +432,6 @@
           const student = students.value.find(s => s.id === formStudentId.value);
           const activeViolations = [];
           if (seninList.value.late) activeViolations.push('Terlambat Upacara');
-          if (seninList.value.attribute) activeViolations.push('Atribut Upacara Kurang');
           sendToCloud("seninsiap", [formDate.value, student.name, formClass.value, activeViolations.join('; ')]);
         };
 
@@ -545,6 +449,7 @@
           visitForm.value = { purpose: '', result: '' };
         };
 
+        // --- DARI SINI SEMUA FITUR SUDAH AKTIF DAN TERKONEKSI KE CLOUD SPREADSHEET ---
         const saveParentSummons = () => {
           if (!formStudentId.value) return;
           const student = students.value.find(s => s.id === formStudentId.value);
@@ -562,11 +467,13 @@
           if (!formStudentId.value) return;
           const student = students.value.find(s => s.id === formStudentId.value);
           sendToCloud("achievements", [formDate.value, student.name, formClass.value, achForm.value.name, achForm.value.rank, achForm.value.level]);
+          achForm.value = { name: '', rank: '', level: 'Sekolah' };
         };
 
         const saveMutation = () => {
           let sName = mutationType.value === 'Keluar' ? students.value.find(s => s.id === formStudentId.value).name : mutationIncomingName.value.trim();
           sendToCloud("mutations", [formDate.value, sName, formClass.value, mutationType.value, mutationSchool.value, mutationReason.value]);
+          mutationIncomingName.value = ''; mutationSchool.value = ''; mutationReason.value = '';
         };
 
         watch(activeTab, () => { nextTick(() => lucide.createIcons()); });
@@ -574,7 +481,7 @@
           isAuthenticated, passwordInput, authError, handleLogin, handleLogout, schoolName, schoolLogo, uploadLogo, wakasisName, saveSettings,
           activeTab, classes, students, attendance, discipline, seninSiap, counseling, homeVisit, parentSummons, ekskulList, ekskulAttendance, achievements, mutations,
           filterClass, formDate, formClass, formStudentId, newStudentName, newStudentClass, discList, discAction, saveDiscipline, seninList, saveSeninSiap,
-          counselForm, visitForm, summonsForm, activeEkskul, ekskulStatus, achForm, mutationType, mutationIncomingName, mutationSchool, mutationReason, filteredStudents, getAttendanceStatus, markAttendance, notification, fetchAllDataFromCloud, deleteStudent
+          counselForm, visitForm, summonsForm, activeEkskul, ekskulStatus, achForm, mutationType, mutationIncomingName, mutationSchool, mutationReason, filteredStudents, getAttendanceStatus, markAttendance, notification, fetchAllDataFromCloud, handleAddStudent
         };
       }
     }).mount('#app');
